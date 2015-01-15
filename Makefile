@@ -10,14 +10,14 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME =		project
+NAME =		ex00
 TYPE =		cpp
 CFLAGS =	-Wall -Werror -Wextra
 
 SRC =		\
-			main.cpp\
-
-
+			main.cpp \
+			1.cpp \
+			2.cpp \
 
 ifeq ($(TYPE), cpp)
 CC = 		g++
@@ -34,27 +34,33 @@ OBJ = $(patsubst %.$(TYPE), $(PATH_OBJ)/%.o, $(SRC))
 
 all: $(NAME)
 
+N := X
+C = $(words $N)$(eval N := x $N)
+T = $(shell ls -1 $(PATH_SRC) | wc -l)
+
+ECHO = echo "\t`expr " [\`expr $C '*' 100 / $T\`" : '.*\(....\)$$'`%]"
+
 $(NAME): namemes $(OBJ)
 	@ $(CC) $(OBJ) $(CFLAGS) $(LFLAGS) -I $(PATH_INC) -o $(NAME)
-	@ echo " \033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+	@ echo "\t\033[4m\033[95mD\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
 
 $(PATH_OBJ)/%.o: $(addprefix $(PATH_SRC)/, %.$(TYPE))
-	@ echo -n .
+	@ $(ECHO)
 	@ mkdir -p $(PATH_OBJ)
 	@ $(CC) -c $^ -I $(PATH_INC) $(CFLAGS) -o $@
 
 clean:
 	@ rm -rf $(PATH_OBJ)
 	@ echo "Cleaning $(NAME) \
-		\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+\t\t\033[4m\033[95mD\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
 
 fclean: clean
 	@ rm -rf $(NAME)
-	@ echo "Fcleaning $(NAME) \
-		\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+	@ echo "Full Cleaning $(NAME) \
+\t\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
 
 namemes :
-	@ echo -n Compiling $(NAME)
+	@ echo Compiling $(NAME)
 
 re: fclean all
 
