@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME =		ex00
+NAME =		project
 TYPE =		cpp
 CFLAGS =	-Wall -Werror -Wextra
 
