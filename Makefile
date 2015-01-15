@@ -16,8 +16,6 @@ CFLAGS =	-Wall -Werror -Wextra
 
 SRC =		\
 			main.cpp \
-			1.cpp \
-			2.cpp \
 
 ifeq ($(TYPE), cpp)
 CC = 		g++
