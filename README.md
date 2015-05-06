@@ -1,5 +1,5 @@
 # Makefile
-C and C++ Makefile
+C
 
 #Use
 Create srcs and includes dir
