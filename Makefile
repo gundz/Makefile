@@ -1,65 +1,65 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: fgundlac <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2013/12/24 18:59:31 by fgundlac          #+#    #+#              #
-#    Updated: 2014/10/10 14:06:34 by fgundlac         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME =			a.out
 
-NAME =		project
-TYPE =		cpp
-CFLAGS =	-Wall -Werror -Wextra
+SRC_NAME =		\
+				main.c \
 
-SRC =		\
-			main.cpp \
+CC =			gcc
 
-ifeq ($(TYPE), cpp)
-CC = 		g++
+CFLAGS =		-Wall -Werror -Wextra
+
+#LIB_NAMES =		-lfoo
+#LIB_PATH =		./libfoo/
+
+#LIB_SUPP =		-lm
+
+SRC_PATH = 		./srcs/
+INC_PATH = 		./includes/
+OBJ_PATH =		./obj/
+
+OBJ_NAME = $(SRC_NAME:.c=.o)
+SRC = $(addprefix $(SRC_PATH), $(SRC_NAME))
+OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
+LIB = $(addprefix -L, $(LIB_PATH))
+INC = $(addprefix -I, $(INC_PATH))
+LDFLAGS = $(LIB) $(LIB_NAMES)
+EMPTY =
+
+ifeq ($(LIB_PATH), $(EMPTY))
 else
-CC =		clang
+libfoo:
+	@ make -C $(LIB_PATH)
 endif
 
+all: namemes libfoo $(NAME)
 
-PATH_INC =	includes/
-PATH_OBJ =	obj
-PATH_SRC =	srcs
+$(NAME): $(OBJ)
+	@ $(CC) $(LDFLAGS) $(LIB_SUPP) $^ -o $@
+	@ echo "\n\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
 
-OBJ = $(patsubst %.$(TYPE), $(PATH_OBJ)/%.o, $(SRC))
-
-all: $(NAME)
-
-N := X
-C = $(words $N)$(eval N := x $N)
-T = $(shell ls -1 $(PATH_SRC) | wc -l)
-
-ECHO = echo "\t`expr " [\`expr $C '*' 100 / $T\`" : '.*\(....\)$$'`%]"
-
-$(NAME): namemes $(OBJ)
-	@ $(CC) $(OBJ) $(CFLAGS) $(LFLAGS) -I $(PATH_INC) -o $(NAME)
-	@ echo "\t\033[4m\033[95mD\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
-
-$(PATH_OBJ)/%.o: $(addprefix $(PATH_SRC)/, %.$(TYPE))
-	@ $(ECHO)
-	@ mkdir -p $(PATH_OBJ)
-	@ $(CC) -c $^ -I $(PATH_INC) $(CFLAGS) -o $@
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@ echo -n "\033[37;7m+\033[0m"
+	@ mkdir -p $(OBJ_PATH) 2> /dev/null
+	@ $(CC) $(CFLAGS) $(LIB) $(INC) -o $@ -c $<
 
 clean:
-	@ rm -rf $(PATH_OBJ)
-	@ echo "Cleaning $(NAME) \
-\t\t\033[4m\033[95mD\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+	@ rm -rf $(OBJ_PATH)
+	@ echo "Cleaning [$(NAME)]\n\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+ifeq ($(LIB_NAMES), $(EMPTY))
+else
+	@ make clean -C $(LIB_PATH)
+endif
 
 fclean: clean
-	@ rm -rf $(NAME)
-	@ echo "Full Cleaning $(NAME) \
-\t\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
-
-namemes :
-	@ echo Compiling $(NAME)
+	@ rm -f $(NAME)
+	@ echo "Fcleaning [$(NAME)]\n\033[4m\033[95md\033[93mo\033[32mn\033[96me \033[91m!\033[0m"
+ifeq ($(LIB_NAMES), $(EMPTY))
+else
+	@ make fclean -C $(LIB_PATH)
+endif
 
 re: fclean all
 
-.PHONY: clean fclean re
+namemes :
+	@ echo -n "Compiling [$(NAME)]: "
+
+.PHONY: all clean fclean re libfoo
