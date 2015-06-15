@@ -1,12 +1,13 @@
-#TYPE: LIB or PROGRAM
-TYPE =			PROGAM
-
 NAME =			a.out
 
 SRCS =			\
 				main.c \
 
+#TYPE: LIB or PROGRAM
+TYPE =			PROGAM
+
 CC =			gcc
+EXTENTION =		c
 
 CFLAGS =		-Wall -Werror -Wextra
 
@@ -19,7 +20,7 @@ SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/
 OBJ_PATH =		./obj/
 
-OBJ_NAME = $(SRCS:.c=.o)
+OBJ_NAME = $(SRCS:.$(EXTENTION)=.o)
 SRC = $(addprefix $(SRC_PATH), $(SRCS))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 LIB = $(addprefix -I, $(addsuffix includes, $(LIB_PATH))) $(addprefix -L, $(LIB_PATH))
@@ -45,7 +46,7 @@ else
 endif
 	@ echo "\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+$(OBJ_PATH)%.o: $(SRC_PATH)%.$(EXTENTION)
 	@ echo -n "\033[37;7m+\033[0m"
 	@ mkdir -p $(OBJ_PATH) 2> /dev/null
 	@ $(CC) $(CFLAGS) $(LIB) $(INC) -c $< -o $@
