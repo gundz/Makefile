@@ -15,6 +15,7 @@ CFLAGS =		-Wall -Werror -Wextra
 #LIB_PATH =		./libfoo/ ./libbar/
 
 #LIB_SUPP =		-lm
+#LIB_SUPP_INC =	-I ./foo/inc/
 
 SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/
@@ -25,6 +26,7 @@ SRC = $(addprefix $(SRC_PATH), $(SRCS))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 LIB = $(addprefix -I, $(addsuffix includes, $(LIB_PATH))) $(addprefix -L, $(LIB_PATH))
 INC = $(addprefix -I, $(INC_PATH))
+INC += $(LIB_SUPP_INC)
 LDFLAGS = $(LIB) $(LIB_NAMES)
 EMPTY =
 
