@@ -20,7 +20,7 @@ CFLAGS =		-Wall -Werror -Wextra
 #LIB_PATH =		./libfoo/ ./libbar/
 
 #LIB_SUPP =		-lm
-#LIB_SUPP_INC =	-I ./foo/inc/
+#LIB_SUPP_INC =		-I ./foo/inc/
 
 SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/
