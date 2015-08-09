@@ -1,12 +1,17 @@
 NAME =			a.out
 
 SRCS =			\
-				main.c \
+			main.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			PROGAM
 
-CC =			gcc
+#OS: LINUX/OSX or WINDOWS
+OS =			LINUX
+
+UNIX_CC =		gcc
+WIN_CC =		i686-w64-mingw32-gcc
+
 EXTENTION =		c
 
 CFLAGS =		-Wall -Werror -Wextra
@@ -21,6 +26,7 @@ SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/
 OBJ_PATH =		./obj/
 
+CC =			$(UNIX_CC)
 OBJ_NAME = $(SRCS:.$(EXTENTION)=.o)
 SRC = $(addprefix $(SRC_PATH), $(SRCS))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
@@ -29,6 +35,12 @@ INC = $(addprefix -I, $(INC_PATH))
 INC += $(LIB_SUPP_INC)
 LDFLAGS = $(LIB) $(LIB_NAMES)
 EMPTY =
+
+ifeq ($(OS), WINDOWS)
+NAME := $(NAME).exe
+CC = $(WIN_CC)
+else
+endif
 
 all: libs name $(OBJ) done $(NAME)
 

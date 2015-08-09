@@ -8,11 +8,14 @@ Edit Makefile
 
 TYPE : type of outpout (library or program) [LIB|PROGRAM]
 
+OS : os for the output file (linux/osx or windows) [LINUX|OSX|WINDOWS]
+
 Name : Name of the project
 
 SRCS : all your sources files
 
-CC : compiler
+UNIX_CC : unix compiler
+WIN_CC : windows cross compiler (mingw for example)
 
 LIB_NAMES and LIB_PATH : your libs to compile
 
